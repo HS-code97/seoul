@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c1311">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>홍대·연남 가족여행</title>
+<meta name="description" content="아빠·엄마·중3 딸의 홍대·연남 2박 3일 가족여행 2026.10.3 – 10.5 일정, 지도, 맛집, 팝업·뷰티 미션, 준비">
+<meta property="og:title" content="🍁 홍대·연남 2박 3일 가족여행 2026">
+<meta property="og:description" content="10.3(토) – 10.5(월) · 일정 · 지도 · 맛집 · 팝업·뷰티 미션">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<canvas id="leaves" aria-hidden="true"></canvas>
+
+<main id="app">
+  <!-- ============ 일정 ============ -->
+  <section class="view active" id="view-plan" aria-label="일정">
+    <header class="hero" id="hero">
+      <div class="hero-bg" aria-hidden="true"><span class="hero-moon"></span><span class="hero-word">가을</span></div>
+      <div class="hero-inner">
+        <p class="hero-kicker"><span class="star">●</span> HONGDAE · YEONNAM · 2026 AUTUMN</p>
+        <h1 class="hero-title">홍대·연남<br>2박 3일 가족여행</h1>
+        <p class="hero-sub">팝업·화장품·소품샵은 딸이, 골목 카페는 부모가 고른 서울의 가을</p>
+        <div class="hero-dates">
+          <span>10.3 <small>토</small></span><i></i><span>10.5 <small>월</small></span>
+        </div>
+        <div class="countdown" id="countdown"></div>
+        <div class="crew">
+          <span class="crew-chip">👨‍👩 어른 2</span>
+          <span class="crew-chip">🎀 중3 딸 1</span>
+        </div>
+        <button class="share-btn" id="shareBtn" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg>
+          가족에게 공유
+        </button>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">▾</div>
+    </header>
+
+    <div class="overview" id="overview"></div>
+
+    <div class="daybar-wrap" id="daybarWrap">
+      <div class="daybar" id="daybar" role="tablist"></div>
+    </div>
+    <div id="dayPanel"></div>
+  </section>
+
+  <!-- ============ 지도 ============ -->
+  <section class="view" id="view-map" aria-label="지도">
+    <header class="page-head">
+      <p class="page-kicker">MAP · 지도</p>
+      <h2>우리 동선 한눈에</h2>
+      <p class="page-desc">핀을 누르면 장소 정보가 열려요. 권역 버튼으로 지도를 옮겨 보세요.</p>
+    </header>
+    <div class="map-filters" id="mapFilters"></div>
+    <div class="map-box"><div id="map"></div></div>
+    <div class="jump-row" id="jumpRow">
+      <button data-fly="홍대">🎤 홍대</button>
+      <button data-fly="연남">🌳 연남</button>
+      <button data-fly="망원">🧺 망원</button>
+      <button data-fly="신촌">🏫 신촌</button>
+      <button data-fly="all">🗺️ 전체</button>
+    </div>
+    <p class="map-legend"><span class="lg exact"></span> 확인된 위치 <span class="lg approx"></span> 대략 위치 (네이버 지도로 확인)</p>
+    <div class="stay-note" id="stayNote"></div>
+    <div class="stay-note" id="offMap"></div>
+  </section>
+
+  <!-- ============ 맛집 ============ -->
+  <section class="view" id="view-food" aria-label="맛집">
+    <header class="page-head">
+      <p class="page-kicker">EAT · 맛집</p>
+      <h2>우리 가족 맞춤 메뉴판</h2>
+      <p class="page-desc">일정의 식사·카페 가게를 모두 모았어요. 가게마다 <b class="tag-a">부모</b>와 <b class="tag-t">중3 딸</b> 추천 메뉴를 나눠 뒀어요. 이름을 누르면 네이버 지도가 열려요.</p>
+    </header>
+    <div class="chips" id="foodFilters"></div>
+    <div class="food-list" id="foodList"></div>
+  </section>
+
+  <!-- ============ 쇼핑 ============ -->
+  <section class="view" id="view-shop" aria-label="쇼핑">
+    <header class="page-head">
+      <p class="page-kicker">SHOP · 쇼핑</p>
+      <h2>딸의 팝업·뷰티 미션</h2>
+      <p class="page-desc">일정 속 팝업·뷰티·쇼핑 가게를 하나씩 정복! 체크한 건 이 폰에 저장돼요.</p>
+    </header>
+    <div class="mission-progress" id="missionProgress"></div>
+    <div id="missionList"></div>
+  </section>
+
+  <!-- ============ 준비 ============ -->
+  <section class="view" id="view-info" aria-label="여행 준비">
+    <header class="page-head">
+      <p class="page-kicker">READY · 준비</p>
+      <h2>출발 전 체크</h2>
+      <p class="page-desc">연휴 당일 출발이에요. 숙소·주차·예약부터 확인!</p>
+    </header>
+
+    <div class="trip-card" id="tripCard"></div>
+
+    <details class="acc" open>
+      <summary>✅ 출발 전 확인할 것 <span class="acc-count" id="prepCount"></span></summary>
+      <div>
+        <p class="small" id="prepNote"></p>
+        <div id="prepList"></div>
+      </div>
+    </details>
+
+    <details class="acc" open>
+      <summary>🚇 교통 요령</summary>
+      <ul class="dots" id="transit"></ul>
+    </details>
+
+    <details class="acc" open>
+      <summary>☔ 비 올 때 대안 동선</summary>
+      <div id="rain"></div>
+    </details>
+
+    <details class="acc">
+      <summary>🏨 숙소 후보</summary>
+      <div id="stayList"></div>
+    </details>
+
+    <details class="acc">
+      <summary>📋 여행 개요</summary>
+      <div id="overviewTable"></div>
+    </details>
+
+    <details class="acc">
+      <summary>📚 참고한 자료</summary>
+      <ul class="dots" id="sources"></ul>
+    </details>
+  </section>
+
+  <footer class="foot">
+    <p>🍁 홍대·연남 2박 3일 가족여행 · 2026</p>
+    <p class="foot-note">영업시간과 팝업 일정은 방문 전 확인</p>
+    <p class="small">모든 날짜·시간은 한국시간(KST) · 지도: © OpenStreetMap contributors</p>
+  </footer>
+</main>
+
+<!-- 하단 탭바 -->
+<nav class="tabbar" id="tabbar" aria-label="메뉴">
+  <button class="tab active" data-view="plan"><svg viewBox="0 0 24 24"><path d="M7 3v2M17 3v2M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/><path d="M8 12h3M8 16h6"/></svg><span>일정</span></button>
+  <button class="tab" data-view="map"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11Z"/><circle cx="12" cy="10" r="2.3"/></svg><span>지도</span></button>
+  <button class="tab" data-view="food"><svg viewBox="0 0 24 24"><path d="M5 11h14a7 7 0 0 1-14 0ZM4 21h16M9 3c0 2 1.5 2 1.5 4M13 3c0 2 1.5 2 1.5 4"/></svg><span>맛집</span></button>
+  <button class="tab" data-view="shop"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>쇼핑</span></button>
+  <button class="tab" data-view="info"><svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/></svg><span>준비</span></button>
+</nav>
+
+<!-- 장소 상세 바텀시트 -->
+<div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+<article class="sheet" id="sheet" aria-modal="true" role="dialog" aria-hidden="true">
+  <div class="sheet-grip" id="sheetGrip"><i></i></div>
+  <button class="sheet-close" id="sheetClose" aria-label="닫기">✕</button>
+  <div class="sheet-body" id="sheetBody"></div>
+</article>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<script src="data.js?v=1" defer></script>
+<script src="app.js?v=1" defer></script>
+</body>
+</html>
