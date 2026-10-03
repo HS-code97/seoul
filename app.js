@@ -23,6 +23,21 @@
   const startOf = r => r.time.split("~")[0];
   const endOf = r => r.time.split("~")[1] || "";
 
+  // 실시간 방문 기록 로드 (localStorage + data.js의 VISITS)
+  if (typeof VISITS === "undefined") window.VISITS = [];
+  const storedVisits = store.get("visits", []);
+  if (storedVisits.length > 0) {
+    VISITS.push(...storedVisits);
+  }
+  // 중복 제거 (같은 timestamp와 place의 조합)
+  const seen = new Set();
+  window.VISITS = VISITS.filter(v => {
+    const key = `${v.timestamp}-${v.place}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   /* ---------- KST 날짜 ---------- */
   const kstDate = () => new Date().toLocaleDateString("sv-SE", { timeZone: TZ });
   const kstHM = () => new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
@@ -69,11 +84,13 @@
   /* ---------- 카운트다운 ---------- */
   function countdown() {
     const el = $("#countdown"), start = new Date(TRIP.start), end = new Date(TRIP.end);
+    const fabBtn = $("#logVisitBtn");
     function draw() {
       const now = new Date();
       if (now >= start && now <= end) {
         const d = DAYS[todayIndex()];
         el.innerHTML = `<div class="cd-msg">🍁 지금 여행 중! ${d ? `오늘은 ${d.label} · ${esc(d.title)}` : ""}</div>`;
+        if (fabBtn.hidden) fabBtn.hidden = false;
         return;
       }
       if (now > end) { el.innerHTML = `<div class="cd-msg">📸 추억 저장 완료! 다음 여행에서 또 만나요.</div>`; return; }
@@ -510,6 +527,91 @@
       else { await navigator.clipboard.writeText(location.href); toast("링크를 복사했어요 📋"); }
     } catch {}
   };
+
+  /* ---------- 방문 기록 모달 ---------- */
+  const visitModal = $("#visitModal"), visitForm = $("#visitForm");
+  const placeSelect = $("#visitPlace"), visitTime = $("#visitTime"), visitPhoto = $("#visitPhoto");
+  const photoPreview = $("#photoPreview"), submitVisit = $("#submitVisit");
+
+  // 모달 초기화: 장소 목록 채우기
+  function initVisitForm() {
+    const today = kstDate();
+    placeSelect.innerHTML = '<option value="">장소를 선택해주세요</option>';
+    Object.entries(PLACES).forEach(([id, p]) => {
+      if (!p.highway && !p.stay) {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = `${p.emoji} ${p.name}`;
+        placeSelect.appendChild(option);
+      }
+    });
+  }
+
+  function openVisitModal() {
+    initVisitForm();
+    const now = new Date();
+    visitTime.value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    visitPhoto.value = "";
+    photoPreview.innerHTML = "";
+    visitModal.hidden = false;
+    visitForm.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(() => { visitModal.classList.add("show"); });
+  }
+
+  function closeVisitModal() {
+    visitForm.classList.remove("open");
+    visitForm.setAttribute("aria-hidden", "true");
+    setTimeout(() => { visitModal.hidden = true; }, 300);
+  }
+
+  // 사진 미리보기
+  visitPhoto.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const img = document.createElement("img");
+      img.src = evt.target.result;
+      photoPreview.innerHTML = "";
+      photoPreview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // 방문 기록 저장
+  submitVisit.onclick = () => {
+    if (!placeSelect.value) { toast("장소를 선택해주세요"); return; }
+    const today = kstDate();
+    const [h, m] = visitTime.value.split(":");
+    const timestamp = `${today}T${h}:${m}:00+09:00`;
+
+    const visit = { timestamp, place: placeSelect.value, photo: null };
+
+    // 사진이 있으면 base64로 저장
+    const img = photoPreview.querySelector("img");
+    if (img) {
+      visit.photo = img.src; // base64 data URL
+    }
+
+    // VISITS 배열에 추가
+    if (!window.VISITS) window.VISITS = [];
+    VISITS.push(visit);
+
+    // localStorage에 저장
+    store.set("visits", VISITS);
+
+    toast("방문 기록이 저장되었어요 ✓");
+    closeVisitModal();
+
+    // 오늘이면 화면 즉시 업데이트
+    if (todayIndex() === DAYS.indexOf(DAYS.find(d => d.date === today))) {
+      renderDay();
+    }
+  };
+
+  $("#visitFormClose").onclick = closeVisitModal;
+  visitModal.onclick = (e) => { if (e.target === visitModal) closeVisitModal(); };
+  $("#logVisitBtn").onclick = openVisitModal;
 
   /* ---------- 시작 ---------- */
   leaves(); countdown(); overview(); daybar();
