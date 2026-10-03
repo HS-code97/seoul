@@ -166,9 +166,10 @@
 
     // 실시간 여행 기록: 이 행의 장소 중 방문한 곳 확인
     const placesInRow = (r.pins || []).filter(k => PLACES[k]);
+    const expectedDate = r.di !== undefined ? DAYS[r.di]?.date : kstDate();
     const visitedPlace = placesInRow.find(placeId => {
       const visited = getVisit(placeId);
-      return visited && visited.timestamp.slice(0, 10) === r.di !== undefined ? DAYS[r.di]?.date : kstDate();
+      return visited && visited.timestamp.slice(0, 10) === expectedDate;
     });
     const visit = visitedPlace ? getVisit(visitedPlace) : null;
 
