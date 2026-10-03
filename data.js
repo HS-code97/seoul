@@ -56,6 +56,7 @@ const PLACES = {
   iseo:     { name: "이서휴게소 (호남선 상행)", q: "이서휴게소 논산방향", emoji: "🍙", lat: 35.8041663, lng: 127.0238828, exact: true, highway: true },
 
   // 홍대
+  nyunyu:   { name: "뉴뉴", q: "뉴뉴 홍대", emoji: "🐰", lat: 37.5517, lng: 126.9226, exact: false, visited: true },
   subako:   { name: "수바코 홍대점", q: "수바코 홍대점", emoji: "🧸", lat: 37.5568552, lng: 126.9286052, exact: true },
   oyTown:   { name: "올리브영 홍대타운", q: "올리브영 홍대타운", emoji: "💄", lat: 37.5566061, lng: 126.9244308, exact: false },
   gogildong:{ name: "고길동의 낯선 강원랜드 팝업 (홍대 스타스퀘어)", q: "홍대 스타스퀘어", emoji: "🎪", lat: 37.5510907, lng: 126.9214635, exact: true },
@@ -369,6 +370,21 @@ const SOURCES = [
   { t: "연남동 소품샵 추천 9곳", u: "https://what.kr/%EC%97%B0%EB%82%A8%EB%8F%99-%EC%86%8C%ED%92%88%EC%83%B5-%EC%B6%94%EC%B2%9C-9%EA%B3%B3%EF%BD%9C%EA%B7%80%EC%97%AC%EC%9B%80%EC%97%90-%EC%A7%84%EC%8B%AC%EC%9D%B8-%EB%8D%95%ED%9B%84%EB%93%A4%EC%9D%84/", d: "도레미랜드, 후카후카스튜디오, 무유무유, 튜즈데이오프, 벌스데이투미, 메이드바이 홍대" },
   { t: "헤럴드경제: 무신사 뷰티 홍대 르포", u: "https://biz.heraldcorp.com/article/10869222" },
   { t: "헤이트래블: 망원동 탐험", u: "https://heytravel.kr/%EC%9D%B4%EB%B0%A9%EC%9D%B8%EC%9D%98-%EB%A7%9D%EC%9B%90%EB%8F%99-%ED%83%90%ED%97%98/", d: "망원시장 먹거리" },
+];
+
+/* ---------------------------------------------------------
+   실시간 여행 기록 — 방문 기록과 사진
+   timestamp: ISO 8601 형식 (예: "2026-10-03T18:00:00+09:00")
+   place: PLACES 키
+   photo: base64 인코딩 사진 또는 null
+   --------------------------------------------------------- */
+const VISITS = [
+  // 실제 방문 기록
+  {
+    timestamp: "2026-10-03T18:00:00+09:00",
+    place: "nyunyu",
+    photo: null, // 사진은 나중에 추가
+  },
 ];
 
 /* ---------------------------------------------------------

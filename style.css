@@ -172,11 +172,13 @@ a { color: inherit; }
 .tl-card { min-width: 0; background: var(--card); border-radius: 18px; padding: 14px 15px; box-shadow: 0 10px 30px rgba(0,0,0,.18); border-left: 5px solid var(--tc); transition: box-shadow .3s; }
 .tl-card.optional { background: #fbf6f0; border: 2px dashed var(--tc); border-left-width: 2px; }
 .tl-card.now { outline: 3px solid var(--lamp); }
+.tl-card.visited { background: #f0fdf4; }
 .tl-card.flash, .food-card.flash, .list-card.flash { box-shadow: 0 0 0 4px var(--lamp), 0 10px 30px rgba(0,0,0,.2); }
 .tl-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
 .tl-type { font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; color: var(--tc); background: color-mix(in srgb, var(--tc) 14%, #fff); }
 .tl-area { font-size: 11.5px; color: var(--ink3); }
 .tl-now { font-size: 10px; font-weight: 800; letter-spacing: .08em; padding: 2px 6px; border-radius: 6px; background: var(--lamp); color: var(--night); }
+.tl-visited { font-size: 10px; font-weight: 800; letter-spacing: .08em; padding: 2px 6px; border-radius: 6px; background: #86efac; color: #166534; }
 .tl-id { margin-left: auto; font-size: 10.5px; color: var(--ink3); font-variant-numeric: tabular-nums; }
 .tl-card h4 { margin: 0 0 4px; font-size: 16px; line-height: 1.4; }
 .tl-card h4 a, .tl-card p a, .tl-tip a, .sh-row a { color: var(--star); text-decoration-thickness: 1px; text-underline-offset: 2px; }
@@ -184,6 +186,8 @@ a { color: inherit; }
 .tl-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px; }
 .tl-badge.teen { background: #ffe4ee; color: var(--teen); }
 .tl-badge.parent { background: #f1e6da; color: #8a5a35; }
+.tl-photo { margin: 10px 0; border-radius: 12px; overflow: hidden; max-height: 280px; }
+.tl-photo img { width: 100%; height: auto; display: block; }
 .tl-tip { margin-top: 10px; padding: 9px 11px 9px 11px; border-radius: 12px; font-size: 13px; color: #5c3a14; line-height: 1.5;
   background: linear-gradient(135deg, #fff1cf, #ffe6c7); border: 1px solid #f6d08a; }
 .tl-tip b { display: inline-block; margin-right: 6px; font-size: 10.5px; font-weight: 900; letter-spacing: .08em; padding: 1px 6px; border-radius: 5px; background: var(--lamp); color: #3b2300; vertical-align: 1px; }

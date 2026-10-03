@@ -132,25 +132,44 @@
   }
   const WHO = { teen: '<span class="tl-badge teen">🎀 딸 자유 시간</span>', parent: '<span class="tl-badge parent">☕ 부모 휴식</span>' };
 
+  // 실시간 여행 기록: 방문한 장소 조회
+  function getVisitedPlaces(date) {
+    return (VISITS || []).filter(v => v.timestamp.slice(0, 10) === date).map(v => v.place);
+  }
+  function getVisit(placeId) {
+    return (VISITS || []).find(v => v.place === placeId);
+  }
+
   function rowCard(r, now) {
     const t = typeOf(r);
     const optional = r.type === "선택";
     const goFood = r.type === "식사" || r.type === "카페";
     const goShop = SHOP.some(g => g.row === r.id);
     const onMap = (r.pins || []).some(k => !PLACES[k]?.highway);
+
+    // 실시간 여행 기록: 이 행의 장소 중 방문한 곳 확인
+    const placesInRow = (r.pins || []).filter(k => PLACES[k]);
+    const visitedPlace = placesInRow.find(placeId => {
+      const visited = getVisit(placeId);
+      return visited && visited.timestamp.slice(0, 10) === r.di !== undefined ? DAYS[r.di]?.date : kstDate();
+    });
+    const visit = visitedPlace ? getVisit(visitedPlace) : null;
+
     return `
       <div class="tl-item" id="row-${r.id}">
         <div class="tl-time"><b>${startOf(r)}</b>${endOf(r) ? `<small>~${endOf(r)}</small>` : ""}<div class="tl-icon" style="background:${t.color}">${r.icon || t.icon}</div></div>
-        <div class="tl-card${optional ? " optional" : ""}${now.has(r.id) ? " now" : ""}" style="--tc:${t.color}">
+        <div class="tl-card${optional ? " optional" : ""}${now.has(r.id) ? " now" : ""}${visit ? " visited" : ""}" style="--tc:${t.color}">
           <div class="tl-top">
             <span class="tl-type">${t.icon} ${r.type}</span>
             <span class="tl-area">📍 ${r.area}</span>
             ${now.has(r.id) ? '<span class="tl-now">NOW</span>' : ""}
+            ${visit ? '<span class="tl-visited">✓ 방문 완료</span>' : ""}
             <span class="tl-id">${r.id}</span>
           </div>
           ${r.who ? WHO[r.who] : ""}
           <h4>${md(r.place)}</h4>
           <p>${md(r.text)}</p>
+          ${visit && visit.photo ? `<div class="tl-photo"><img src="${visit.photo}" alt="방문 사진"/></div>` : ""}
           ${r.tip ? `<div class="tl-tip"><b>TIP</b>${md(r.tip)}</div>` : ""}
           ${onMap || goFood || goShop ? `<div class="tl-actions">
             ${onMap ? `<button data-map="${r.id}">📍 지도</button>` : ""}
