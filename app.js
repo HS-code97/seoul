@@ -388,7 +388,7 @@
   }
   function mapNotes() {
     $("#stayNote").innerHTML = `
-      <b>🏨 숙소 · 토요일 신촌역 / 일요일 미정</b>
+      <b>🏨 숙소 · 토요일 신촌역 / 일요일 홍대 아르테 스테이</b>
       <p>${esc(TRIP.stayNote)}</p>
       <div class="stay-btns">${TRIP.hotels.map(k => `<span><button data-stay="${k}">📍 ${esc(PLACES[k].name)}</button><a href="${naver(PLACES[k].q)}" target="_blank" rel="noopener" aria-label="${esc(PLACES[k].name)} 네이버 지도">↗</a></span>`).join("")}</div>`;
     $$("#stayNote [data-stay]").forEach(b => b.onclick = () => focusPlace(b.dataset.stay));
