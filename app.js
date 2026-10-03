@@ -99,7 +99,7 @@
             <i class="ov-dot" style="background:${d.hue};color:${d.hue}"></i>
           </button>`).join("")}
       </div>
-      <p class="ov-note">🏨 거점: 홍대입구역 도보권 호텔 (주차 가능 필수)<br>🚗 서울 안에서는 차를 호텔에 두고 도보·지하철<br>${esc(TRIP.intro)}</p>`;
+      <p class="ov-note">🏨 ${esc(TRIP.base)}<br>🚗 서울 안에서는 차를 호텔에 두고 도보·지하철<br>${esc(TRIP.intro)}</p>`;
     $$(".ov-item").forEach(b => b.onclick = () => { selectDay(+b.dataset.go); $("#daybarWrap").scrollIntoView({ behavior: "smooth" }); });
   }
 
@@ -388,7 +388,7 @@
   }
   function mapNotes() {
     $("#stayNote").innerHTML = `
-      <b>🏨 숙소 (예약 확인 전 · 후보 4곳)</b>
+      <b>🏨 숙소 · 토요일 신촌역 / 일요일 미정</b>
       <p>${esc(TRIP.stayNote)}</p>
       <div class="stay-btns">${TRIP.hotels.map(k => `<span><button data-stay="${k}">📍 ${esc(PLACES[k].name)}</button><a href="${naver(PLACES[k].q)}" target="_blank" rel="noopener" aria-label="${esc(PLACES[k].name)} 네이버 지도">↗</a></span>`).join("")}</div>`;
     $$("#stayNote [data-stay]").forEach(b => b.onclick = () => focusPlace(b.dataset.stay));
