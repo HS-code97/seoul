@@ -57,7 +57,7 @@ const PLACES = {
   iseo:     { name: "이서휴게소 (호남선 상행)", q: "이서휴게소 논산방향", emoji: "🍙", lat: 35.8041663, lng: 127.0238828, exact: true, highway: true },
 
   // 홍대
-  nyunyu:   { name: "뉴뉴", q: "뉴뉴 홍대", emoji: "🐰", lat: 37.5517, lng: 126.9226, exact: false, visited: true },
+  nyunyu:   { name: "뉴뉴 홍대점 (액세서리)", q: "뉴뉴 홍대점 nyunyu", emoji: "🎀", lat: 37.5517, lng: 126.9226, exact: false, visited: true },
   subako:   { name: "수바코 홍대점", q: "수바코 홍대점", emoji: "🧸", lat: 37.5568552, lng: 126.9286052, exact: true },
   oyTown:   { name: "올리브영 홍대타운", q: "올리브영 홍대타운", emoji: "💄", lat: 37.5566061, lng: 126.9244308, exact: false },
   gogildong:{ name: "고길동의 낯선 강원랜드 팝업 (홍대 스타스퀘어)", q: "홍대 스타스퀘어", emoji: "🎪", lat: 37.5510907, lng: 126.9214635, exact: true },
@@ -129,8 +129,8 @@ const DAYS = [
       { id: "d1-04", time: "17:30~18:10", type: "숙소", place: "신촌 라싸 체크인 → 홍대로 이동", area: "신촌",
         text: "짐을 풀고 가벼운 차림으로 나와 신촌역에서 2호선을 타고 한 정거장인 홍대입구역으로 간다.",
         tip: "토요일 밤 숙소는 신촌 라싸(신촌역 근처). 지하철 대신 걸어도 15~20분 거리다.", pins: ["sinchonStay"] },
-      { id: "d1-v1", time: "18:00", type: "방문", visited: true, place: "뉴뉴", area: "홍대",
-        text: "실제 방문. 18:00에 도착해 둘러봤다.", pins: ["nyunyu"] },
+      { id: "d1-v1", time: "18:00", type: "방문", visited: true, place: "[뉴뉴 홍대점 (nyunyu)](https://naver.me/Fz8nW4Cg)", area: "홍대",
+        text: "홍대 액세서리 쇼핑의 성지. 18:00에 도착해 둘러봤다.", pins: ["nyunyu"] },
       { id: "d1-05", time: "18:10~18:40", type: "쇼핑", place: "[수바코 홍대점](https://ohou.se/advices/9990)", area: "홍대",
         text: "홍대입구역 6번 출구 바로 앞 지하 1층, 40평 규모의 일본 빈티지·캐릭터 소품샵이다. 산리오 등 키덜트 소품과 키링이 가득하다.",
         tip: "와우산로37길 46 지하 1층, 매일 13:00~21:00. 여행 첫 가게로 딸의 기분을 올리기 좋다.", pins: ["subako"] },
