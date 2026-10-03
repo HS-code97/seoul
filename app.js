@@ -171,7 +171,7 @@
       const visited = getVisit(placeId);
       return visited && visited.timestamp.slice(0, 10) === expectedDate;
     });
-    const visit = visitedPlace ? getVisit(visitedPlace) : null;
+    const visit = r.visited ? (getVisit((r.pins || [])[0]) || {}) : visitedPlace ? getVisit(visitedPlace) : null;
 
     return `
       <div class="tl-item" id="row-${r.id}">
