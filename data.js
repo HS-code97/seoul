@@ -58,7 +58,7 @@ const PLACES = {
 
   // 홍대
   nyunyu:   { name: "뉴뉴 홍대점 (액세서리)", q: "뉴뉴 홍대점 홍익로3길 8", emoji: "🎀", lat: 37.5543152, lng: 126.9222446, exact: true, visited: true },
-  sogak:    { name: "소각커피 (산도)", q: "마포구 월드컵북로 24 소각커피", emoji: "🥪", lat: 37.5556274, lng: 126.9210078, exact: false },
+  sogak:    { name: "소각커피 (산도)", q: "마포구 월드컵북로 24 소각커피", emoji: "🥪", lat: 37.5570, lng: 126.9200, exact: true },
   wally:    { name: "월리를 찾아라 체험관 홍대점", q: "마포구 와우산로 86 월리를 찾아라 체험관", emoji: "🔍", lat: 37.5520324, lng: 126.9237281, exact: true},
   narae:    { name: "나래함박 홍대 연남동 본점", q: "나래함박 홍대 연남동 본점", emoji: "🍔", lat: 37.5596603, lng: 126.9256496, exact: true },
   doma:     { name: "도마 홍대본점", q: "도마 홍대본점 양화로16길 33", emoji: "🥩", lat: 37.5530819, lng: 126.9214284, exact: true },
