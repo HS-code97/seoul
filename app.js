@@ -157,6 +157,19 @@
     return (VISITS || []).find(v => v.place === placeId);
   }
 
+  // 식사·카페 카드의 ①②③ 탭
+  function optTabs(r, opts) {
+    const N = "①②③④⑤";
+    return `<div class="opt-tabs" role="tablist">${opts.map((f, i) => `<button class="opt-tab${i ? "" : " active"}" role="tab" data-opt="${i}">${N[i]} ${esc(f.name.split(" ")[0])}</button>`).join("")}</div>
+      ${opts.map((f, i) => { const p = PLACES[f.place]; return `<div class="opt-panel"${i ? " hidden" : ""} data-opt="${i}">
+        <h4><a href="${naver(p.q)}" target="_blank" rel="noopener">${N[i]} ${esc(f.name)} <small>↗</small></a></h4>
+        <div class="fc-sub">${esc(f.sub)}</div>
+        <p>${esc(f.desc)}</p>
+        ${menuHTML(f)}
+        <div class="opt-btns">${p.lat && !p.highway ? `<button data-pin="${f.place}">📍 지도</button>` : ""}<a href="${naver(p.q)}" target="_blank" rel="noopener">🗺️ 네이버 지도</a></div>
+      </div>`; }).join("")}`;
+  }
+
   function rowCard(r, now) {
     const t = typeOf(r);
     const optional = r.type === "선택";
@@ -171,6 +184,7 @@
       const visited = getVisit(placeId);
       return visited && visited.timestamp.slice(0, 10) === expectedDate;
     });
+    const opts = goFood ? (r.pins || []).map(k => FOOD.find(f => f.place === k && f.row === r.id) || FOOD.find(f => f.place === k)).filter(Boolean) : [];
     const visit = r.visited ? (getVisit((r.pins || [])[0]) || {}) : visitedPlace ? getVisit(visitedPlace) : null;
 
     return `
@@ -185,8 +199,8 @@
             <span class="tl-id">${r.id}</span>
           </div>
           ${r.who ? WHO[r.who] : ""}
-          <h4>${md(r.place)}</h4>
-          <p>${md(r.text)}</p>
+          ${opts.length > 1 ? optTabs(r, opts) : `<h4>${md(r.place)}</h4>
+          <p>${md(r.text)}</p>`}
           ${visit && visit.photo ? `<div class="tl-photo"><img src="${visit.photo}" alt="방문 사진"/></div>` : ""}
           ${r.tip ? `<div class="tl-tip"><b>TIP</b>${md(r.tip)}</div>` : ""}
           ${onMap || goFood || goShop ? `<div class="tl-actions">
@@ -226,6 +240,12 @@
         <button id="nextDay" ${curDay === DAYS.length - 1 ? "disabled" : ""}>다음 날 ›</button>
       </div>`;
     $$("[data-map]", $("#dayPanel")).forEach(b => b.onclick = () => showRowOnMap(b.dataset.map));
+    $$(".opt-tab", $("#dayPanel")).forEach(b => b.onclick = () => {
+      const card = b.closest(".tl-card");
+      $$(".opt-tab", card).forEach(x => x.classList.toggle("active", x === b));
+      $$(".opt-panel", card).forEach(x => x.hidden = x.dataset.opt !== b.dataset.opt);
+    });
+    $$(".opt-btns [data-pin]", $("#dayPanel")).forEach(b => b.onclick = () => { showView("map"); setTimeout(() => focusPlace(b.dataset.pin), 350); });
     $$("[data-food]", $("#dayPanel")).forEach(b => b.onclick = () => { foodFilter = "all"; renderFood(); showView("food"); scrollToEl(`.food-card[data-row="${b.dataset.food}"]`); });
     $$("[data-shop]", $("#dayPanel")).forEach(b => b.onclick = () => { showView("shop"); scrollToEl(`.list-card[data-row="${b.dataset.shop}"]`); });
     $("#prevDay").onclick = () => { selectDay(curDay - 1); $("#daybarWrap").scrollIntoView({ behavior: "smooth" }); };
