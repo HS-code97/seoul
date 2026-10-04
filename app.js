@@ -144,7 +144,7 @@
   function nowIds(d, rows) {
     if (todayIndex() !== DAYS.indexOf(d)) return new Set();
     const hm = kstHM();
-    const on = rows.filter(r => r.type !== "선택" && startOf(r) <= hm && (!endOf(r) || hm < endOf(r)));
+    const on = rows.filter(r => r.type !== "선택" && !r.off && startOf(r) <= hm && (!endOf(r) || hm < endOf(r)));
     return new Set(on.map(r => r.id));
   }
   const WHO = { teen: '<span class="tl-badge teen">🎀 딸 자유 시간</span>', parent: '<span class="tl-badge parent">☕ 부모 휴식</span>' };
@@ -201,7 +201,8 @@
   function renderDay() {
     const d = DAYS[curDay];
     // 시간순 (같은 시각이면 문서 순서)
-    const rows = d.rows.map((r, k) => ({ ...r, k })).sort((a, b) => startOf(a).localeCompare(startOf(b)) || a.k - b.k);
+    const rows = d.rows.map((r, k) => ({ ...r, k })).filter(r => !r.off).sort((a, b) => startOf(a).localeCompare(startOf(b)) || a.k - b.k);
+    const offRows = d.rows.filter(r => r.off);
     const now = nowIds(d, rows);
     $("#dayPanel").innerHTML = `
       <div class="day-head" style="--hue:${d.hue}">
@@ -214,9 +215,12 @@
           ${d.holiday ? `<span class="dh-holiday">🎌 ${esc(d.holiday)}</span>` : ""}
         </div>
       </div>
-      <div class="legend">${Object.entries(TYPES).filter(([k]) => d.rows.some(r => r.type === k))
+      <div class="legend">${Object.entries(TYPES).filter(([k]) => rows.some(r => r.type === k))
         .map(([k, t]) => `<span style="--tc:${t.color}"${k === "선택" ? ' class="opt"' : ""}>${t.icon} ${k}</span>`).join("")}</div>
       <div class="timeline">${rows.map(r => rowCard(r, now)).join("")}</div>
+      ${offRows.length ? `<div class="off-list"><h4>📦 일정에서 뺀 곳 <small>맛집·쇼핑 탭과 지도에는 그대로 있어요</small></h4>
+        ${offRows.map(r => `<div class="off-item" id="row-${r.id}"><div class="tl-card" style="--tc:${typeOf(r).color}"><span class="tl-type">${typeOf(r).icon} ${r.type}</span> <b>${md(r.place)}</b> <small>· ${r.area}</small>
+          ${(r.pins || []).some(k => PLACES[k]?.lat) ? `<button data-map="${r.id}">📍</button>` : ""}</div></div>`).join("")}</div>` : ""}
       <div class="day-nav">
         <button id="prevDay" ${curDay === 0 ? "disabled" : ""}>‹ 이전 날</button>
         <button id="nextDay" ${curDay === DAYS.length - 1 ? "disabled" : ""}>다음 날 ›</button>
@@ -325,7 +329,7 @@
       return `
       <article class="food-card" data-row="${r.id}">
         <div class="fc-img" style="--tc:${t.color}">
-          <div class="days"><span style="background:${d.hue}">${d.label}</span><span>${r.time}</span></div>
+          <div class="days"><span style="background:${d.hue}">${d.label}</span><span>${r.off ? "일정 외" : r.time}</span></div>
           <span class="fc-emoji">${p.emoji}</span>
           <span class="price">${t.icon} ${r.type}${num >= 0 && r.pins.length > 1 ? ` · ${"①②③④⑤"[num]}` : ""}</span>
         </div>
@@ -337,7 +341,7 @@
           ${r.tip ? `<div class="tl-tip"><b>TIP</b>${md(r.tip)}</div>` : ""}
           <div class="fc-actions">
             <button class="btn light" data-plan="${r.id}">🗓️ 일정에서 보기</button>
-            ${p.highway ? `<a class="btn dark" href="${naver(p.q)}" target="_blank" rel="noopener">🗺️ 네이버 지도</a>` : `<button class="btn dark" data-pin="${f.place}">📍 지도</button>`}
+            ${p.highway || !p.lat ? `<a class="btn dark" href="${naver(p.q)}" target="_blank" rel="noopener">🗺️ 네이버 지도</a>` : `<button class="btn dark" data-pin="${f.place}">📍 지도</button>`}
           </div>
         </div>
       </article>`;
@@ -355,6 +359,7 @@
     "홍대": [[37.5475, 126.9180], [37.5600, 126.9300]],
     "연남": [[37.5590, 126.9190], [37.5662, 126.9285]],
     "망원": [[37.5530, 126.9025], [37.5580, 126.9120]],
+    "명동": [[37.5595, 126.9815], [37.5645, 126.9945]],
     "신촌": [[37.5540, 126.9340], [37.5675, 126.9405]],
   };
   function initMap() {
@@ -375,7 +380,7 @@
         html: `<div class="pin${p.stay ? " home" : ""}${p.exact ? "" : " approx"}" style="background:${color}"><span>${p.emoji}</span></div>`,
       });
       const m = L.marker([p.lat, p.lng], { icon, zIndexOffset: p.stay ? 500 : 0, title: p.name }).addTo(map);
-      const when = [...new Set(rows.filter(r => !p.stay).map(r => `${DAYS[r.di].label} ${startOf(r)}`))].join(" · ");
+      const when = [...new Set(rows.filter(r => !p.stay && !r.off).map(r => `${DAYS[r.di].label} ${startOf(r)}`))].join(" · ");
       m.bindPopup(`<div class="pop"><b>${p.emoji} ${esc(p.name)}</b><span>${p.stay ? "숙소 후보" : esc(first ? `${first.type} · ${first.area}` : "")}${when ? ` · ${when}` : ""}</span>${p.exact ? "" : '<em>대략 위치 · 정확한 위치는 네이버 지도</em>'}<div class="pop-btns"><button data-pop="${id}">자세히 보기</button><a href="${naver(p.q)}" target="_blank" rel="noopener">네이버 지도</a></div></div>`);
       m.on("popupopen", e => { e.popup.getElement().querySelector("[data-pop]").onclick = () => openSheet(id); });
       markers[id] = { m, days: p.stay ? DAYS.map((_, i) => i) : [...new Set(rows.map(r => r.di))] };
@@ -425,14 +430,14 @@
   }
   function mapNotes() {
     $("#stayNote").innerHTML = `
-      <b>🏨 숙소 · 토요일 신촌 라싸 / 일요일 홍대 아르테 스테이</b>
+      <b>🏨 숙소 · 토요일 더레스티 / 일요일 트래블어스 명동</b>
       <p>${esc(TRIP.stayNote)}</p>
       <div class="stay-btns">${TRIP.hotels.map(k => `<span><button data-stay="${k}">📍 ${esc(PLACES[k].name)}</button><a href="${naver(PLACES[k].q)}" target="_blank" rel="noopener" aria-label="${esc(PLACES[k].name)} 네이버 지도">↗</a></span>`).join("")}</div>`;
     $$("#stayNote [data-stay]").forEach(b => b.onclick = () => focusPlace(b.dataset.stay));
     $("#offMap").innerHTML = `
       <b>🚗 지도에 없는 곳</b>
-      <p>고속도로 구간(d1-01~d1-03, d3-06)의 휴게소: ${["jeongan", "iseo"].map(k => `<a href="${naver(PLACES[k].q)}" target="_blank" rel="noopener">${esc(PLACES[k].name)}</a>`).join(", ")}<br>
-      룩백 팝업(d2-11)은 장소가 아직 확인되지 않아 핀을 찍지 않았어요. 팝가 앱에서 확인하세요.</p>`;
+      <p>고속도로 구간(d1-01~d1-02, d3-06)의 휴게소: ${["jeongan", "iseo"].map(k => `<a href="${naver(PLACES[k].q)}" target="_blank" rel="noopener">${esc(PLACES[k].name)}</a>`).join(", ")}<br>
+      룩백 팝업과 미도인 홍대는 위치를 확인하지 못해 핀을 찍지 않았어요. 네이버 지도에서 확인하세요.</p>`;
   }
 
   /* ---------- 쇼핑 미션 ---------- */

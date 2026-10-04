@@ -419,3 +419,12 @@ a { color: inherit; }
   .hero-moon, .hero-scroll { animation: none; }
   .view { animation: none; }
 }
+
+/* ---------- 일정에서 뺀 곳 ---------- */
+.off-list { margin: 18px 0 6px; padding: 14px; border-radius: 16px; background: rgba(255,255,255,.08); }
+.off-list h4 { margin: 0 0 10px; color: #f6e7d6; font-size: 14px; }
+.off-list h4 small { display: block; font-weight: 400; opacity: .75; font-size: 12px; margin-top: 2px; }
+.off-item { margin-top: 8px; }
+.off-item .tl-card { padding: 9px 12px; border-left-width: 4px; font-size: 13.5px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; opacity: .85; }
+.off-item .tl-card small { color: var(--ink3); }
+.off-item button { margin-left: auto; border: 1px solid var(--line); background: #f7efe6; border-radius: 8px; padding: 3px 8px; }
