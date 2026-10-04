@@ -50,7 +50,7 @@ const TYPES = {
 const PLACES = {
   // 숙소 (더레스티는 주소 미확인 → 신촌역 기준 대략 위치)
   theResti: { name: "더레스티 (토요일 밤)", q: "서대문구 연세로2길 27-3 더레스티", emoji: "🛏️", lat: 37.5564055, lng: 126.9383626, exact: true, stay: true },
-  travelus: { name: "트래블어스 명동 (일요일 밤)", q: "중구 퇴계로31길 17 트래블어스 명동", emoji: "🏨", lat: 37.5619828, lng: 126.992251, exact: false, stay: true },
+  travelus: { name: "트래블어스 명동 (일요일 밤)", q: "중구 퇴계로31길 17 트래블어스 명동", emoji: "🏨", lat: 37.5607, lng: 126.9922, exact: true, stay: true },
 
   // 고속도로 (지도에는 표시하지 않음)
   jeongan:  { name: "정안알밤휴게소 (천안논산선 상행)", q: "정안알밤휴게소 천안방향", emoji: "🌰", lat: 36.5692171, lng: 127.1145352, exact: true, highway: true },
@@ -89,7 +89,7 @@ const PLACES = {
   gyeongui: { name: "경의선숲길 (연트럴파크)", q: "경의선숲길 연남동", emoji: "🌳", lat: 37.5601, lng: 126.9237, exact: false },
   tuktuk:   { name: "툭툭누들타이", q: "툭툭누들타이", emoji: "🍤", lat: 37.5613, lng: 126.9258, exact: false },
   soi:      { name: "소이연남", q: "소이연남", emoji: "🍲", lat: 37.5631, lng: 126.9238, exact: false },
-  doremi:   { name: "도레미랜드", q: "마포구 동교로38길 33-12 도레미랜드", emoji: "🧸", lat: 37.5616906, lng: 126.9248292, exact: false },
+  doremi:   { name: "도레미랜드", q: "마포구 동교로38길 33-12 도레미랜드", emoji: "🧸", lat: 37.5619, lng: 126.9261, exact: true },
   fuka:     { name: "후카후카스튜디오", q: "마포구 동교로29길 48 후카후카스튜디오", emoji: "🔑", lat: 37.5624046, lng: 126.9228389, exact: true},
   muyu:     { name: "무유무유", q: "무유무유", emoji: "📒", lat: 37.5636, lng: 126.9247, exact: false },
   tuesday:  { name: "튜즈데이오프", q: "튜즈데이오프", emoji: "🐶", lat: 37.5642, lng: 126.9229, exact: false },
