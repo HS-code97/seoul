@@ -195,7 +195,7 @@
             <span class="tl-type">${t.icon} ${r.type}</span>
             <span class="tl-area">📍 ${r.area}</span>
             ${now.has(r.id) ? '<span class="tl-now">NOW</span>' : ""}
-            ${visit ? '<span class="tl-visited">✓ 방문 완료</span>' : ""}
+            ${visit ? (now.has(r.id) ? '<span class="tl-visited">● 방문 중</span>' : '<span class="tl-visited">✓ 방문 완료</span>') : ""}
             <span class="tl-id">${r.id}</span>
           </div>
           ${r.who ? WHO[r.who] : ""}
