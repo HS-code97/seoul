@@ -97,7 +97,7 @@ const PLACES = {
   chungsudang:{ name: "청수당 공명", q: "청수당 공명", emoji: "🎋", lat: 37.5611, lng: 126.9247, exact: false },
   libre:    { name: "커피리브레 연남점", q: "커피리브레 연남점", emoji: "☕", lat: 37.5621857, lng: 126.9268044, exact: true },
   layered:  { name: "카페 레이어드 연남", q: "카페 레이어드 연남", emoji: "🍰", lat: 37.5649847, lng: 126.9241878, exact: true },
-  koriko:   { name: "코리코 카페", q: "마포구 성미산로 165-7 코리코 카페 지하1층", emoji: "🧹", lat: 37.56258, lng: 126.92196, exact: false },
+  koriko:   { name: "코리코카페 연남점", q: "코리코카페 연남점 성미산로 165-7", emoji: "🧹", lat: 37.5653, lng: 126.9247, exact: true },
   birthday: { name: "벌스데이투미", q: "벌스데이투미", emoji: "🧸", lat: 37.5628, lng: 126.9262, exact: false },
 
   // 망원
@@ -185,7 +185,7 @@ const DAYS = [
         tip: "연남에 도착하자마자 코리코 카페에 대기를 먼저 건다.", pins: ["doremi", "fuka", "muyu", "tuesday", "c17"] },
       { id: "d2-10", time: "15:50~16:50", type: "카페", place: "① [코리코 카페](https://cafe5.co.kr/%EB%8D%B0%EC%9D%B4%ED%8A%B8-%EC%BD%94%EC%8A%A4-%EC%B6%94%EC%B2%9C-%EC%97%B0%EB%82%A8%EB%8F%99-%EC%B9%B4%ED%8E%98-%EB%B2%A0%EC%8A%A4%ED%8A%B8-5/) ② 벌스데이투미", area: "연남",
         text: "① 성미산로 165-7 지하1층·1~2층. 지브리 '마녀 배달부 키키' 테마 카페. 노란 건물과 빨간 문, 키키와 지지가 그려진 음료·디저트. ② 대기가 너무 길면 케어베어 인형 카페로.",
-        tip: "꼭 갈 곳. 순번 대기제라 소품샵 도는 동안 미리 대기를 걸어 둔다.", pins: ["koriko", "birthday"] },
+        tip: "꼭 갈 곳. 순번 대기제라 소품샵 도는 동안 미리 대기를 걸어 둔다. 네이버 지도 기준 18:30 라스트오더. 도로명 성미산로 165-7 대원미디어 연남점.", pins: ["koriko", "birthday"] },
       { id: "d2-w1", time: "17:00~18:30", type: "팝업", place: "[월리를 찾아라 체험관 홍대점](https://www.segye.com/newsView/20261002505895)", area: "홍대",
         text: "입장할 때 받는 QR 팔찌로 지도를 보며 홍대 거리 곳곳에 숨은 월리와 친구들 40종을 찾고 미션 10개를 한다.",
         tip: "운영시간 안에서는 이용 시간 제한이 없어 저녁 먹고 나서도 이어서 할 수 있다. 체험은 마포구 와우산로 86 1층 매표소(Place 1)에서 티켓·팔찌를 받고 시작한다.", pins: ["wally"] },
